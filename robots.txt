@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://big4.info/sitemap.xml

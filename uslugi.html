@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIG4 — Услуги / Services</title>
+<meta name="description" content="Каталог модулей сводного отчёта BIG4 на 4 языках.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap&subset=cyrillic,cyrillic-ext,latin,arabic" rel="stylesheet">
+<link rel="stylesheet" href="assets/big4.css">
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="index.html">
+      <svg viewBox="0 0 40 40" fill="none"><path d="M20 2 L35 11 V29 L20 38 L5 29 V11 Z" stroke="var(--accent-2)" stroke-width="1.4"/><path d="M14 26 L18.5 30.5 L27 19" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>BIG<span class="four">4</span></span>
+    </a>
+    <nav class="main">
+      <a href="uslugi.html" data-i18n="nav_services">Услуги</a>
+      <a href="kak-rabotaet.html" data-i18n="nav_how">Как работает</a>
+      <a href="o-kompanii.html" data-i18n="nav_about">О компании</a>
+      <a href="index.html#referral" data-i18n="nav_referral">Реферальная программа</a>
+      <a href="index.html#pricing" data-i18n="nav_pricing">Тарифы</a>
+    </nav>
+    <div class="head-cta">
+      <div class="lang-switch"><button data-lang="ru">RU</button><button data-lang="en">EN</button><button data-lang="fr">FR</button><button data-lang="ar">AR</button></div>
+      <button id="country-chip" class="country-chip" title="Country">🌍</button>
+      <a href="index.html#cta" class="btn primary" data-i18n="btn_order">Заказать отчёт</a>
+    </div>
+  </div>
+</header>
+
+<div class="wrap page-hero">
+  <div class="crumb"><a href="index.html">BIG4</a> · <span data-i18n="u_crumb">Услуги</span></div>
+  <h1><span data-i18n="u_h1a">Каталог модулей </span><em data-i18n="u_h1em">сводного отчёта</em><span data-i18n="u_h1b"></span></h1>
+  <p class="lede" data-i18n="u_lede">Один заказ собирается из нужных модулей. Каждый проходит единый стандарт честности и завершается дорожной картой исправлений.</p>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="svc reveal"><svg class="ic" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><path d="M24 4 L40 10 V24 C40 34 33 42 24 45 C15 42 8 34 8 24 V10 Z"/><path d="M16 24 L22 30 L33 17" stroke-linecap="round" stroke-linejoin="round"/></svg><div><div class="meta"><span data-i18n="u_module">Модуль</span> 01</div><h3 data-i18n="svc_expertise_t">Полная честная экспертиза</h3><p data-i18n="svc_expertise_d">Независимый аудит любого проекта без комплиментов в ущерб правде.</p></div></div>
+    <div class="svc reveal"><svg class="ic" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 40 V20 M18 40 V12 M28 40 V24 M38 40 V8" stroke-linecap="round"/></svg><div><div class="meta"><span data-i18n="u_module">Модуль</span> 02</div><h3 data-i18n="svc_valuation_t">Оценка бизнеса и проекта</h3><p data-i18n="svc_valuation_d">Стоимость и обоснование через триангуляцию методов.</p></div></div>
+    <div class="svc reveal"><svg class="ic" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><circle cx="24" cy="18" r="8"/><path d="M24 26 V42 M16 34 H32"/></svg><div><div class="meta"><span data-i18n="u_module">Модуль</span> 03</div><h3 data-i18n="svc_ip_t">Оценка интеллектуальной собственности</h3><p data-i18n="svc_ip_d">Стоимость и правовая защищённость патентов, ПО и ноу-хау.</p></div></div>
+    <div class="svc reveal"><svg class="ic" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="10" width="32" height="28" rx="2"/><path d="M14 30 L20 22 L26 27 L34 16" stroke-linecap="round" stroke-linejoin="round"/></svg><div><div class="meta"><span data-i18n="u_module">Модуль</span> 04</div><h3 data-i18n="svc_finmodel_t">Финмодель и бизнес-план</h3><p data-i18n="svc_finmodel_d">Проверка или построение финансовой модели и юнит-экономики.</p></div></div>
+    <div class="svc reveal"><svg class="ic" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><path d="M24 6 V42 M12 14 H36 M10 14 L6 26 H18 Z M38 14 L34 26 H46 Z" stroke-linecap="round" stroke-linejoin="round"/></svg><div><div class="meta"><span data-i18n="u_module">Модуль</span> 05</div><h3 data-i18n="svc_ma_t">Инвест-сделка и Due Diligence</h3><p data-i18n="svc_ma_d">Комплексная проверка под сделку или раунд.</p></div></div>
+    <div class="svc reveal"><svg class="ic" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><rect x="11" y="6" width="26" height="36" rx="2"/><line x1="16" y1="16" x2="32" y2="16"/><line x1="16" y1="23" x2="32" y2="23"/><line x1="16" y1="30" x2="26" y2="30"/></svg><div><div class="meta"><span data-i18n="u_module">Модуль</span> 06</div><h3 data-i18n="svc_legal_t">Проверка юридических документов</h3><p data-i18n="svc_legal_d">Договоры, NDA, SPA, SHA. Ошибки, риски, кабальные условия.</p></div></div>
+    <div class="svc reveal"><svg class="ic" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><path d="M24 4 L42 12 V22 C42 33 34 41 24 44 C14 41 6 33 6 22 V12 Z"/><path d="M24 16 V26 M24 31 V31.5" stroke-linecap="round"/></svg><div><div class="meta"><span data-i18n="u_module">Модуль</span> 07</div><h3 data-i18n="svc_compliance_t">Соответствие законодательству</h3><p data-i18n="svc_compliance_d">Комплаенс под отрасль и юрисдикцию, флаги нарушений.</p></div></div>
+    <div class="svc reveal"><svg class="ic" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><circle cx="24" cy="24" r="18" opacity=".5"/><circle cx="24" cy="24" r="9" opacity=".5"/><path d="M24 24 L24 6" stroke="var(--accent-2)"/><circle cx="24" cy="24" r="2.4" fill="currentColor" stroke="none"/></svg><div><div class="meta"><span data-i18n="u_module">Модуль</span> 08 · <span data-i18n="svc_spyware_tag">Security · уникально</span></div><h3 data-i18n="svc_spyware_t">Скан шпионских включений</h3><p data-i18n="svc_spyware_d">Трекеры, макросы, фишинг-ссылки, утечка метаданных, вредоносные вложения.</p></div></div>
+    <div class="svc reveal"><svg class="ic" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 38 L20 28 L27 33 L40 18" stroke-linecap="round" stroke-linejoin="round"/><path d="M32 18 H40 V26" stroke-linecap="round" stroke-linejoin="round"/></svg><div><div class="meta"><span data-i18n="u_module">Модуль</span> 09</div><h3 data-i18n="svc_industry_t">Отраслевой аудит</h3><p data-i18n="svc_industry_d">Профильная панель и отраслевые бенчмарки для 8 отраслей.</p></div></div>
+    <div class="svc reveal"><svg class="ic" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 6 H30 L38 14 V42 H14 Z" stroke-linejoin="round"/><path d="M30 6 V14 H38"/><path d="M19 38 L23 42 L31 32" stroke-linecap="round" stroke-linejoin="round" stroke="var(--accent-2)"/></svg><div><div class="meta"><span data-i18n="u_module">Модуль</span> 10</div><h3 data-i18n="svc_roadmap_t">Дорожная карта исправлений</h3><p data-i18n="svc_roadmap_d">Что, как, кем, за сколько и когда устранить выявленное.</p></div></div>
+
+    <div class="callout reveal">
+      <div class="mono" data-i18n="u_standard_label">Единый стандарт каждого отчёта</div>
+      <p data-i18n="u_standard_note">Классификация → панель экспертов → честность → адвокат дьявола → кросс-верификация → вердикт → дорожная карта → защита перед внешним аудитором.</p>
+    </div>
+  </div>
+</section>
+
+<section class="final">
+  <div class="wrap">
+    <h2 class="reveal" data-i18n="u_cta_h">Соберём отчёт под вашу задачу</h2>
+    <p class="reveal" data-i18n="u_cta_p">Опишите проект и приложите материалы — вернёмся с набором модулей, сметой и сроком.</p>
+    <div class="contacts reveal">
+      <a href="mailto:aslankaa@yandex.ru?subject=BIG4" class="btn" data-i18n="btn_email">Написать на e-mail</a>
+      <a href="kak-rabotaet.html" class="btn ghost" data-i18n="btn_how">Как это работает</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <a class="brand" href="index.html"><svg viewBox="0 0 40 40" fill="none"><path d="M20 2 L35 11 V29 L20 38 L5 29 V11 Z" stroke="var(--accent-2)" stroke-width="1.4"/><path d="M14 26 L18.5 30.5 L27 19" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>BIG<span class="four">4</span></span></a>
+    <nav>
+      <a href="uslugi.html" data-i18n="foot_services">Услуги</a><a href="kak-rabotaet.html" data-i18n="foot_how">Как работает</a><a href="o-kompanii.html" data-i18n="foot_about">О компании</a><a href="oferta.html" data-i18n="foot_offer">Оферта</a><a href="politika.html" data-i18n="foot_privacy">Конфиденциальность</a>
+    </nav>
+    <div class="mono" data-i18n="foot_op">ООО «Группа Компаний Центр» · 2026</div>
+  </div>
+</footer>
+
+<div class="switch"><button data-t="dark" class="on">Dark</button><button data-t="light">Light</button><button data-t="sepia">Sepia</button></div>
+<script src="assets/big4.js"></script>
+<script src="assets/countries.js"></script>
+<script src="assets/i18n-pages.js"></script>
+<script src="assets/i18n.js"></script>
+</body>
+</html>
