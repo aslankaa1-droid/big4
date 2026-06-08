@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Заверение отчёта — BIG4 эксперт</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap&subset=cyrillic,cyrillic-ext,latin" rel="stylesheet">
+<link rel="stylesheet" href="../assets/big4.css"><link rel="stylesheet" href="cabinet.css">
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <a class="logo" href="dashboard.html"><svg viewBox="0 0 40 40" fill="none"><path d="M20 2 L35 11 V29 L20 38 L5 29 V11 Z" stroke="var(--accent-2)" stroke-width="1.4"/><path d="M14 26 L18.5 30.5 L27 19" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>BIG<span class="four">4</span></span></a>
+    <nav>
+      <a href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Обзор</a>
+      <a href="expert.html" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3 8-8"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke-linecap="round"/></svg>Проверка</a>
+      <a href="#" onclick="logout();return false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 4h4a2 2 0 012 2v12a2 2 0 01-2 2h-4"/><path d="M9 16l-4-4 4-4M5 12h11" stroke-linecap="round" stroke-linejoin="round"/></svg>Выйти</a>
+    </nav>
+    <div class="side-foot"><div class="who" id="who">—<small id="who-sub">эксперт</small></div></div>
+  </aside>
+
+  <div class="main-col">
+    <div class="topbar"><div><h1 id="o-title">Заверение</h1><div class="sub" id="o-id">—</div></div><a href="expert.html" class="btn ghost sm" data-i18n="eo_back">← В очередь</a></div>
+    <div class="content" id="content"><div class="panel"><p class="muted">Загрузка…</p></div></div>
+  </div>
+</div>
+<div class="switch"><button data-t="dark" class="on">Dark</button><button data-t="light">Light</button><button data-t="sepia">Sepia</button></div>
+<script src="../assets/big4.js"></script>
+<script src="api.js"></script>
+<script src="../assets/countries.js"></script>
+<script src="../assets/i18n-cabinet.js"></script>
+<script src="cabinet-i18n.js"></script>
+<script src="../assets/i18n.js"></script>
+<script>
+function T(k,d){return (window.BIG4I18N&&window.BIG4I18N.t(k))||d;}
+function modTitle(code){return code==='publish'?T('mod_publish','Публикация'):T('svc_'+code+'_t',code);}
+var V_CLS={excellent:"ex",good:"gd",bad:"bd",fatal:"ft"};
+function vLabel(v){return T('verdict_'+(V_CLS[v]||'gd'),v);}
+function verdictOpts(){return [["excellent","verdict_ex"],["good","verdict_gd"],["bad","verdict_bd"],["fatal","verdict_ft"]].map(function(v){return [v[0],T(v[1],v[0])];});}
+function sevOpts(){return [["low","sev_low"],["medium","sev_medium"],["high","sev_high"],["stopper","sev_stopper"]].map(function(s){return [s[0],T(s[1],s[0])];});}
+var orderId=new URLSearchParams(location.search).get('id');
+var STATE={ reportId:null, overall:"good", findings:[] };
+
+(async function(){
+  if(!requireAuth()) return;
+  try{ var me=(await api.me()).user; document.getElementById('who').firstChild.textContent=me.name||me.email; document.getElementById('who-sub').textContent=me.role;
+    if(me.role!=='expert'&&me.role!=='admin'){ toast(T('eo_not_expert','Только для экспертов'),'error'); setTimeout(function(){location.href='dashboard.html';},1500); return; } }
+  catch(e){ if(e.code==='unauthorized'){location.href='login.html';return;} }
+  if(!orderId){ document.getElementById('content').innerHTML='<div class="panel"><p class="muted">Заказ не указан.</p></div>'; return; }
+  await load();
+})();
+
+async function load(){
+  var c=document.getElementById('content'), data;
+  try{ data=await api.expertOrder(orderId); }catch(e){ c.innerHTML='<div class="panel"><p class="muted">'+esc(e.message)+'</p></div>'; return; }
+  var o=data.order, report=data.report, mr=data.moduleResults||[], files=data.files||[];
+  document.getElementById('o-title').textContent=o.title||'Заказ';
+  document.getElementById('o-id').textContent=String(o.id).slice(-6).toUpperCase()+' · '+(o.status);
+
+  if(!report){ c.innerHTML='<div class="panel"><p class="muted">'+T('eo_draft_wait','Черновик ещё собирается AI-панелью. Вернитесь позже.')+'</p></div>'; return; }
+  STATE.reportId=report.id; STATE.overall=report.overall_verdict||'good';
+  STATE.findings=(data.findings||[]).map(function(f){return {module_code:f.module_code,severity:f.severity,title:f.title,evidence:f.evidence,recommendation:f.recommendation};});
+
+  var html='';
+  // контекст
+  html+='<div class="panel reveal"><h2>'+T('eo_context','Контекст заказа')+'</h2><p class="muted">'+esc(o.context||'—')+'</p></div>';
+
+  // результаты модулей (что выдала AI-панель)
+  html+='<div class="panel reveal"><h2>'+T('eo_ai','Выводы AI-панели по модулям')+'</h2>';
+  if(mr.length){ mr.forEach(function(m){
+    if(!m.module_code) return;
+    html+='<div style="padding:14px 0;border-bottom:1px solid var(--line)"><div style="display:flex;gap:10px;align-items:center"><strong>'+esc(modTitle(m.module_code))+'</strong>'+(m.verdict?' <span class="mono" style="color:var(--accent)">'+esc(vLabel(m.verdict))+'</span>':'')+'</div>'+(m.summary?'<p class="muted" style="margin:6px 0 0;font-size:.9rem">'+esc(m.summary)+'</p>':'')+'</div>';
+  }); } else html+='<p class="muted">'+T('eo_no_results','Нет результатов модулей')+'</p>';
+  html+='</div>';
+
+  // материалы
+  html+='<div class="panel reveal"><h2>'+T('eo_materials','Материалы клиента')+'</h2><div class="filelist">';
+  if(files.length){ files.forEach(function(f){ html+='<div class="f"><span><a href="#" onclick="dl(\''+f.id+'\',\''+esc(f.filename).replace(/\x27/g,"\\x27")+'\');return false" style="color:var(--accent);text-decoration:none">'+esc(f.filename)+'</a></span><span class="sz">'+Math.max(1,Math.round((f.size||0)/1024))+' KB</span></div>'; }); }
+  else html+='<p class="muted">'+T('eo_no_files','Файлы не приложены')+'</p>';
+  html+='</div></div>';
+
+  // правка вердикта
+  html+='<div class="panel reveal"><h2>'+T('eo_verdict','Сводный вердикт')+'</h2><div class="field"><label>'+T('eo_verdict_label','Итоговый вердикт по отчёту')+'</label><select id="overall">'+
+    verdictOpts().map(function(v){return '<option value="'+v[0]+'"'+(v[0]===STATE.overall?' selected':'')+'>'+v[1]+'</option>';}).join('')+'</select></div></div>';
+
+  // правка находок
+  html+='<div class="panel reveal"><div class="ph"><h2>'+T('eo_findings','Находки и дорожная карта')+'</h2><button class="btn ghost sm" onclick="addFinding()">'+T('eo_add','+ Добавить')+'</button></div><div id="findings"></div></div>';
+
+  // действия
+  html+='<div class="panel reveal" style="display:flex;gap:12px;flex-wrap:wrap"><button class="btn ghost" onclick="save()">'+T('eo_save','Сохранить правки')+'</button><button class="btn" onclick="approve()">'+T('eo_approve','Заверить отчёт')+'</button><span class="hint" style="align-self:center">'+T('eo_note','Заверение переводит заказ в статус «Готов» и разрешает публикацию.')+'</span></div>';
+
+  c.innerHTML=html;
+  c.querySelectorAll('.reveal').forEach(function(el){el.classList.add('in');});
+  renderFindings();
+}
+
+function renderFindings(){
+  var box=document.getElementById('findings'); if(!box) return;
+  box.innerHTML = STATE.findings.length ? STATE.findings.map(function(f,i){
+    return '<div style="padding:14px 0;border-bottom:1px solid var(--line)">'+
+      '<div style="display:flex;gap:10px;margin-bottom:8px"><select onchange="upd('+i+',\'severity\',this.value)" style="max-width:160px">'+
+      sevOpts().map(function(s){return '<option value="'+s[0]+'"'+(s[0]===f.severity?' selected':'')+'>'+s[1]+'</option>';}).join('')+'</select>'+
+      '<input value="'+esc(f.title||'')+'" oninput="upd('+i+',\'title\',this.value)" placeholder="'+T('eo_title_ph','Суть находки')+'" style="flex:1">'+
+      '<button class="btn ghost sm" onclick="rmFinding('+i+')">'+T('eo_remove','Удалить')+'</button></div>'+
+      '<textarea oninput="upd('+i+',\'evidence\',this.value)" placeholder="'+T('eo_ev_ph','Обоснование / трассировка к источнику')+'" style="min-height:60px;margin-bottom:8px">'+esc(f.evidence||'')+'</textarea>'+
+      '<textarea oninput="upd('+i+',\'recommendation\',this.value)" placeholder="'+T('eo_rec_ph','Рекомендация (что/как/кем/срок)')+'" style="min-height:60px">'+esc(f.recommendation||'')+'</textarea></div>';
+  }).join('') : '<p class="muted">'+T('eo_no_findings','Находок нет. Можно добавить вручную.')+'</p>';
+}
+function upd(i,k,v){ STATE.findings[i][k]=v; }
+function addFinding(){ STATE.findings.push({module_code:null,severity:'medium',title:'',evidence:'',recommendation:''}); renderFindings(); }
+function rmFinding(i){ STATE.findings.splice(i,1); renderFindings(); }
+
+async function save(){
+  try{
+    STATE.overall=document.getElementById('overall').value;
+    await api.expertPatch(STATE.reportId,{ overall_verdict:STATE.overall, findings:STATE.findings });
+    toast(T('t_saved','Правки сохранены'));
+  }catch(e){ toast(e.message,'error'); }
+}
+async function approve(){
+  try{
+    STATE.overall=document.getElementById('overall').value;
+    await api.expertPatch(STATE.reportId,{ overall_verdict:STATE.overall, findings:STATE.findings });
+    await api.expertApprove(STATE.reportId);
+    toast(T('t_approved','Отчёт заверён'));
+    setTimeout(function(){location.href='expert.html';},900);
+  }catch(e){ toast(e.message,'error'); }
+}
+async function dl(fileId,name){
+  try{
+    var base=(localStorage.getItem('big4-api')||'http://localhost:8787/api/v1').replace(/\/$/,'');
+    var res=await fetch(base+'/files/'+fileId+'/download',{headers:{Authorization:'Bearer '+localStorage.getItem('big4-access')}});
+    if(!res.ok){ toast(T('err_doc','Документ недоступен'),'error'); return; }
+    var blob=await res.blob(); var u=URL.createObjectURL(blob);
+    var a=document.createElement('a'); a.href=u; a.download=name||'file'; a.click(); URL.revokeObjectURL(u);
+  }catch(e){ toast(T('err_download','Ошибка скачивания'),'error'); }
+}
+</script>
+</body>
+</html>

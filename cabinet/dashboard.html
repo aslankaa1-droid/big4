@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Обзор — BIG4 кабинет</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap&subset=cyrillic,cyrillic-ext,latin" rel="stylesheet">
+<link rel="stylesheet" href="../assets/big4.css"><link rel="stylesheet" href="cabinet.css">
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <a class="logo" href="dashboard.html"><svg viewBox="0 0 40 40" fill="none"><path d="M20 2 L35 11 V29 L20 38 L5 29 V11 Z" stroke="var(--accent-2)" stroke-width="1.4"/><path d="M14 26 L18.5 30.5 L27 19" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>BIG<span class="four">4</span></span></a>
+    <nav>
+      <a href="dashboard.html" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Обзор</a>
+      <a href="orders.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h14v16H5z"/><path d="M9 9h6M9 13h6M9 17h3"/></svg>Мои заказы</a>
+      <a href="new-order.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8" stroke-linecap="round"/></svg>Новый отчёт</a>
+      <a href="referral.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="9" r="3"/><circle cx="17" cy="15" r="3"/><path d="M9.5 10.5l5 3"/></svg>Реферальная программа</a>
+      <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>Профиль</a>
+      <a href="../index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>На сайт</a>
+    </nav>
+    <div class="side-foot"><div class="who" id="who">—<small id="who-sub">—</small></div></div>
+  </aside>
+
+  <div class="main-col">
+    <div class="topbar"><div><h1 data-i18n="cab_overview">Обзор</h1></div><a href="new-order.html" class="btn sm" data-cab-new>+ Новый отчёт</a></div>
+    <div class="content">
+
+      <div class="stats">
+        <div class="stat reveal"><div class="v" id="m-active">—</div><div class="l" data-i18n="cab_d_metric_active">Заказа в работе</div></div>
+        <div class="stat reveal"><div class="v" id="m-ready">—</div><div class="l" data-i18n="cab_d_metric_ready">Готовых отчётов</div></div>
+        <div class="stat reveal"><div class="v" id="m-pub">—</div><div class="l" data-i18n="cab_d_metric_pub">Опубликовано</div></div>
+        <div class="stat reveal"><div class="v" id="m-bonus">—</div><div class="l" data-i18n="cab_d_metric_bonus">Бонусный баланс</div></div>
+      </div>
+
+      <div class="panel reveal">
+        <div class="ph"><h2 data-i18n="cab_d_recent">Последние заказы</h2><a href="orders.html" style="color:var(--accent);text-decoration:none;font-size:.88rem" data-i18n="cab_d_all">Все заказы →</a></div>
+        <table class="tbl">
+          <thead><tr><th>Заказ</th><th>Статус</th><th>Сумма</th><th>Обновлён</th></tr></thead>
+          <tbody id="recent"><tr><td colspan="4" class="muted" style="padding:18px">Загрузка…</td></tr></tbody>
+        </table>
+      </div>
+
+      <div class="panel reveal" style="display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap">
+        <div><h2 style="margin-bottom:4px">Приведите партнёра</h2><p class="muted">За каждого приведённого клиента — бонусы и растущая скидка. Партнёру — приветственная скидка.</p></div>
+        <a href="referral.html" class="btn ghost">Моя реферальная ссылка</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="switch"><button data-t="dark" class="on">Dark</button><button data-t="light">Light</button><button data-t="sepia">Sepia</button></div>
+<script src="../assets/big4.js"></script>
+<script src="api.js"></script>
+<script src="../assets/countries.js"></script>
+<script src="../assets/i18n-cabinet.js"></script>
+<script src="cabinet-i18n.js"></script>
+<script src="../assets/i18n.js"></script>
+<script>
+(async function(){
+  if(!requireAuth()) return;
+  try{
+    var me = (await api.me()).user;
+    document.getElementById('who').firstChild.textContent = me.name || me.email;
+    document.getElementById('who-sub').textContent = (me.role||'client') + (me.referral_code ? ' · '+me.referral_code : '');
+    if(me.role==='expert' || me.role==='admin'){
+      var nav=document.querySelector('.side nav');
+      var site=nav.querySelector('a[href="../index.html"]');
+      var a=document.createElement('a'); a.href='expert.html';
+      a.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3 8-8"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke-linecap="round"/></svg>Проверка';
+      nav.insertBefore(a, site);
+      if(me.role==='admin'){
+        var adm=document.createElement('a'); adm.href='admin.html';
+        adm.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/><path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>'+((window.BIG4I18N&&window.BIG4I18N.t('cab_admin'))||'Админ');
+        nav.insertBefore(adm, site);
+      }
+    }
+  }catch(e){ if(e.code==='unauthorized'){ location.href='login.html'; return; } toast(e.message,'error'); }
+
+  try{
+    var items = (await api.listOrders()).items || [];
+    var active = items.filter(function(o){ return ['queued','processing','in_review','awaiting_payment'].includes(o.status); }).length;
+    var ready = items.filter(function(o){ return o.status==='ready'; }).length;
+    var pub = items.filter(function(o){ return o.status==='published'; }).length;
+    set('m-active',active); set('m-ready',ready); set('m-pub',pub);
+    var recent = items.slice(0,5);
+    var tb = document.getElementById('recent');
+    tb.innerHTML = recent.length ? recent.map(rowHtml).join('') : '<tr><td colspan="4" class="muted" style="padding:18px">'+T('d_no_orders','Пока нет заказов.')+' <a href="new-order.html" style="color:var(--accent)">'+T('d_create_first','Создать первый отчёт →')+'</a></td></tr>';
+  }catch(e){ document.getElementById('recent').innerHTML = '<tr><td colspan="4" class="muted" style="padding:18px">'+esc(e.message)+'</td></tr>'; }
+
+  try{ var r = await api.referral(); set('m-bonus', fmtBonus(r.bonus_balance||0)); }catch(_){ set('m-bonus','0'); }
+})();
+function T(k,d){ return (window.BIG4I18N&&window.BIG4I18N.t(k))||d; }
+function set(id,v){ document.getElementById(id).textContent = v; }
+function fmtBonus(n){ return new Intl.NumberFormat('ru-RU').format(n) + ' ₽'; }
+function rowHtml(o){
+  var date = o.updated_at ? o.updated_at.slice(0,10) : '';
+  var sum = (o.price!=null && o.status!=='draft') ? (o.price+' '+T('d_unit','у.е.')) : '—';
+  return '<tr class="row" onclick="location=\'order.html?id='+encodeURIComponent(o.id)+'\'"><td>'+esc(o.title||o.id)+'</td><td>'+statusBadge(o.status)+'</td><td>'+esc(sum)+'</td><td>'+esc(date)+'</td></tr>';
+}
+</script>
+</body>
+</html>

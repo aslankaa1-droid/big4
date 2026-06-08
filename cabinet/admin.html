@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Администрирование — BIG4 кабинет</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap&subset=cyrillic,cyrillic-ext,latin,arabic" rel="stylesheet">
+<link rel="stylesheet" href="../assets/big4.css"><link rel="stylesheet" href="cabinet.css">
+<style>
+.adm-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px}
+.adm-tabs button{border:1px solid var(--line);background:var(--bg-elev);color:var(--ink-soft);cursor:pointer;border-radius:100px;padding:10px 18px;font-family:var(--sans);font-weight:600;font-size:.88rem;transition:.25s}
+.adm-tabs button.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.adm-tabs button:hover:not(.on){color:var(--ink);border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
+.adm-sec{display:none}
+.adm-sec.on{display:block}
+.adm-toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.adm-toolbar input,.adm-toolbar select{background:var(--bg-elev);border:1px solid var(--line);border-radius:10px;color:var(--ink);font-family:var(--sans);font-size:.9rem;padding:10px 13px}
+.adm-toolbar input{min-width:240px;flex:1}
+.rolesel{background:var(--bg-elev);border:1px solid var(--line);border-radius:8px;color:var(--ink);font-family:var(--sans);font-size:.84rem;padding:6px 8px}
+.tinp{background:var(--bg-elev);border:1px solid var(--line);border-radius:8px;color:var(--ink);font-family:var(--sans);font-size:.84rem;padding:7px 9px;width:100%}
+.tinp.mono{font-family:var(--mono);font-size:.74rem}
+.act-btn{border:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer;border-radius:8px;padding:6px 11px;font-family:var(--sans);font-size:.8rem;font-weight:600;transition:.2s}
+.act-btn:hover{border-color:var(--accent);color:var(--accent)}
+.act-btn.danger:hover{border-color:var(--v-fatal);color:var(--v-fatal)}
+.mono-cell{font-family:var(--mono);font-size:.72rem;color:var(--ink-soft)}
+.role-tag{font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:100px;border:1px solid var(--line);color:var(--ink-soft)}
+.role-tag.admin{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 40%,transparent)}
+.role-tag.expert{color:var(--accent-2);border-color:color-mix(in srgb,var(--accent-2) 40%,transparent)}
+.not-admin{text-align:center;padding:60px 20px;color:var(--ink-soft)}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <a class="logo" href="dashboard.html"><svg viewBox="0 0 40 40" fill="none"><path d="M20 2 L35 11 V29 L20 38 L5 29 V11 Z" stroke="var(--accent-2)" stroke-width="1.4"/><path d="M14 26 L18.5 30.5 L27 19" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>BIG<span class="four">4</span></span></a>
+    <nav>
+      <a href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Обзор</a>
+      <a href="orders.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h14v16H5z"/><path d="M9 9h6M9 13h6M9 17h3"/></svg>Мои заказы</a>
+      <a href="new-order.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8" stroke-linecap="round"/></svg>Новый отчёт</a>
+      <a href="referral.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="9" r="3"/><circle cx="17" cy="15" r="3"/><path d="M9.5 10.5l5 3"/></svg>Реферальная программа</a>
+      <a href="expert.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3 8-8"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke-linecap="round"/></svg>Проверка</a>
+      <a href="admin.html" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/><path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>Админ</a>
+      <a href="../index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>На сайт</a>
+    </nav>
+    <div class="side-foot"><div class="who" id="who">—<small id="who-sub">—</small></div></div>
+  </aside>
+
+  <div class="main-col">
+    <div class="topbar"><div><h1 data-i18n="adm_title">Администрирование</h1><div class="sub" data-i18n="adm_sub">Платформа · управление</div></div></div>
+    <div class="content">
+
+      <div id="guard" class="not-admin" style="display:none"><div class="panel"><h2 data-i18n="adm_not_admin">Раздел доступен только администраторам</h2></div></div>
+
+      <div id="adm-body" style="display:none">
+        <div class="adm-tabs">
+          <button data-tab="overview" class="on" data-i18n="adm_tab_overview">Обзор</button>
+          <button data-tab="users" data-i18n="adm_tab_users">Пользователи</button>
+          <button data-tab="orders" data-i18n="adm_tab_orders">Заказы</button>
+          <button data-tab="tariffs" data-i18n="adm_tab_tariffs">Тарифы</button>
+          <button data-tab="audit" data-i18n="adm_tab_audit">Журнал</button>
+        </div>
+
+        <!-- ОБЗОР -->
+        <section class="adm-sec on" data-sec="overview">
+          <div class="stats">
+            <div class="stat"><div class="v" id="st-users">—</div><div class="l" data-i18n="adm_m_users">Пользователей</div></div>
+            <div class="stat"><div class="v" id="st-orders">—</div><div class="l" data-i18n="adm_m_orders">Заказов всего</div></div>
+            <div class="stat"><div class="v" id="st-review">—</div><div class="l" data-i18n="adm_m_review">На проверке</div></div>
+            <div class="stat"><div class="v" id="st-revenue">—</div><div class="l" data-i18n="adm_m_revenue">Выручка (оплачено)</div></div>
+          </div>
+          <div class="panel">
+            <div class="ph"><h2 data-i18n="adm_tab_orders">Заказы</h2><span class="muted" id="st-byhint"></span></div>
+            <div id="st-bystatus" class="dls"></div>
+          </div>
+        </section>
+
+        <!-- ПОЛЬЗОВАТЕЛИ -->
+        <section class="adm-sec" data-sec="users">
+          <div class="panel">
+            <div class="ph"><h2 data-i18n="adm_users_h">Пользователи и роли</h2></div>
+            <div class="adm-toolbar">
+              <input id="u-search" data-i18n-ph="adm_search" placeholder="Поиск по e-mail или имени…">
+            </div>
+            <p class="hint" data-i18n="adm_self_note" style="margin-bottom:14px">Собственную учётную запись изменить нельзя.</p>
+            <div style="overflow-x:auto"><table class="tbl">
+              <thead><tr><th data-i18n="adm_th_user">Пользователь</th><th data-i18n="adm_th_role">Роль</th><th data-i18n="adm_th_status">Статус</th><th data-i18n="adm_th_reg">Регистрация</th><th data-i18n="adm_th_act">Действия</th></tr></thead>
+              <tbody id="u-body"><tr><td colspan="5" class="muted" style="padding:18px" data-i18n="cab_loading">Загрузка…</td></tr></tbody>
+            </table></div>
+          </div>
+        </section>
+
+        <!-- ЗАКАЗЫ -->
+        <section class="adm-sec" data-sec="orders">
+          <div class="panel">
+            <div class="ph"><h2 data-i18n="adm_orders_h">Все заказы</h2></div>
+            <div class="adm-toolbar">
+              <select id="o-filter">
+                <option value="" data-i18n="adm_filter_all">Все статусы</option>
+                <option value="draft">draft</option><option value="awaiting_payment">awaiting_payment</option>
+                <option value="queued">queued</option><option value="processing">processing</option>
+                <option value="in_review">in_review</option><option value="ready">ready</option>
+                <option value="published">published</option><option value="cancelled">cancelled</option><option value="failed">failed</option>
+              </select>
+            </div>
+            <div style="overflow-x:auto"><table class="tbl">
+              <thead><tr><th data-i18n="adm_th_order">Заказ</th><th data-i18n="adm_th_client">Клиент</th><th data-i18n="adm_th_status">Статус</th><th data-i18n="adm_th_sum">Сумма</th><th data-i18n="adm_th_upd">Обновлён</th></tr></thead>
+              <tbody id="o-body"><tr><td colspan="5" class="muted" style="padding:18px" data-i18n="cab_loading">Загрузка…</td></tr></tbody>
+            </table></div>
+          </div>
+        </section>
+
+        <!-- ТАРИФЫ -->
+        <section class="adm-sec" data-sec="tariffs">
+          <div class="panel">
+            <div class="ph"><h2 data-i18n="adm_tariffs_h">Тарифы</h2><button class="btn sm" id="t-add" data-i18n="adm_tar_add">+ Добавить тариф</button></div>
+            <div style="overflow-x:auto"><table class="tbl">
+              <thead><tr><th data-i18n="adm_th_code">Код</th><th data-i18n="adm_th_title">Название</th><th data-i18n="adm_th_price">Правило цены (JSON)</th><th data-i18n="adm_th_on">Активен</th><th data-i18n="adm_th_act">Действия</th></tr></thead>
+              <tbody id="t-body"><tr><td colspan="5" class="muted" style="padding:18px" data-i18n="cab_loading">Загрузка…</td></tr></tbody>
+            </table></div>
+          </div>
+        </section>
+
+        <!-- ЖУРНАЛ -->
+        <section class="adm-sec" data-sec="audit">
+          <div class="panel">
+            <div class="ph"><h2 data-i18n="adm_audit_h">Журнал действий</h2></div>
+            <div style="overflow-x:auto"><table class="tbl">
+              <thead><tr><th data-i18n="adm_th_time">Время</th><th data-i18n="adm_th_actor">Инициатор</th><th data-i18n="adm_th_action">Действие</th><th data-i18n="adm_th_obj">Объект</th></tr></thead>
+              <tbody id="a-body"><tr><td colspan="4" class="muted" style="padding:18px" data-i18n="cab_loading">Загрузка…</td></tr></tbody>
+            </table></div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="switch"><button data-t="dark" class="on">Dark</button><button data-t="light">Light</button><button data-t="sepia">Sepia</button></div>
+<script src="../assets/big4.js"></script>
+<script src="api.js"></script>
+<script src="../assets/countries.js"></script>
+<script src="../assets/i18n-cabinet.js"></script>
+<script src="cabinet-i18n.js"></script>
+<script src="../assets/i18n.js"></script>
+<script>
+function T(k,d){ return (window.BIG4I18N && window.BIG4I18N.t(k)) || d; }
+var ME=null, loaded={};
+
+// плейсхолдеры по data-i18n-ph (после смены языка)
+function applyPlaceholders(){ document.querySelectorAll('[data-i18n-ph]').forEach(function(el){ var v=T(el.getAttribute('data-i18n-ph')); if(v) el.setAttribute('placeholder',v); }); }
+var _origApply = window.BIG4_onApply;
+window.BIG4_onApply = function(l){ if(typeof _origApply==='function') _origApply(l); applyPlaceholders(); rerender(); };
+
+// переключение вкладок
+document.querySelectorAll('.adm-tabs button').forEach(function(b){
+  b.addEventListener('click', function(){
+    document.querySelectorAll('.adm-tabs button').forEach(function(x){x.classList.toggle('on',x===b);});
+    var tab=b.getAttribute('data-tab');
+    document.querySelectorAll('.adm-sec').forEach(function(s){s.classList.toggle('on',s.getAttribute('data-sec')===tab);});
+    load(tab);
+  });
+});
+
+function fmtNum(n){ return new Intl.NumberFormat('ru-RU').format(n||0); }
+function roleTag(r){ return '<span class="role-tag '+esc(r)+'">'+esc(T('role_'+r, r))+'</span>'; }
+function ustBadge(s){ return s==='blocked' ? '<span class="badge s-wait"><span class="d"></span>'+esc(T('ust_blocked','Заблокирован'))+'</span>' : '<span class="badge s-ready"><span class="d"></span>'+esc(T('ust_active','Активен'))+'</span>'; }
+
+// ===== загрузка вкладок (ленивая, с кэшем) =====
+async function load(tab, force){
+  if(loaded[tab] && !force) return;
+  try{
+    if(tab==='overview'){
+      var s=await api.adminStats();
+      set('st-users',fmtNum(s.users)); set('st-orders',fmtNum(s.orders)); set('st-review',fmtNum(s.in_review));
+      set('st-revenue',fmtNum(s.revenue)+' '+T('d_unit','у.е.'));
+      var box=document.getElementById('st-bystatus');
+      box.innerHTML=(s.orders_by_status||[]).map(function(x){ return '<div class="dl"><span class="fmt">'+esc(x.status)+'</span> '+fmtNum(x.c)+'</div>'; }).join('') || '<span class="muted">'+T('adm_empty','Пусто')+'</span>';
+    }
+    else if(tab==='users'){ await renderUsers(); }
+    else if(tab==='orders'){ await renderOrders(); }
+    else if(tab==='tariffs'){ await renderTariffs(); }
+    else if(tab==='audit'){
+      var a=await api.adminAudit(); var tb=document.getElementById('a-body');
+      tb.innerHTML=(a.items&&a.items.length)? a.items.map(function(x){
+        return '<tr><td class="mono-cell">'+esc((x.created_at||'').replace('T',' ').slice(0,16))+'</td><td>'+esc(x.actor_email||x.actor_id||'—')+'</td><td><span class="mono-cell">'+esc(x.action)+'</span></td><td class="mono-cell">'+esc((x.entity||'')+(x.entity_id?(' · '+String(x.entity_id).slice(-8)):''))+'</td></tr>';
+      }).join('') : '<tr><td colspan="4" class="muted" style="padding:18px">'+T('adm_empty','Пусто')+'</td></tr>';
+    }
+    loaded[tab]=true;
+  }catch(e){ if(e.code==='unauthorized'){ location.href='login.html'; return; } toast(e.message,'error'); }
+}
+
+async function renderUsers(){
+  var q=document.getElementById('u-search').value.trim();
+  var d=await api.adminUsers(q); var tb=document.getElementById('u-body');
+  var roles=['client','expert','admin','partner'];
+  tb.innerHTML=(d.items&&d.items.length)? d.items.map(function(u){
+    var self = ME && u.id===ME.id;
+    var sel='<select class="rolesel" data-uid="'+esc(u.id)+'" data-act="role"'+(self?' disabled':'')+'>'+roles.map(function(r){return '<option value="'+r+'"'+(u.role===r?' selected':'')+'>'+esc(T('role_'+r,r))+'</option>';}).join('')+'</select>';
+    var blkLabel = u.status==='blocked' ? T('adm_unblock','Разблокировать') : T('adm_block','Заблокировать');
+    var blkBtn = self ? '' : '<button class="act-btn danger" data-uid="'+esc(u.id)+'" data-act="block" data-to="'+(u.status==='blocked'?'active':'blocked')+'">'+esc(blkLabel)+'</button>';
+    return '<tr><td><b>'+esc(u.name||u.email)+'</b><div class="mono-cell">'+esc(u.email)+(self?' · you':'')+'</div></td><td>'+sel+'</td><td>'+ustBadge(u.status)+'</td><td class="mono-cell">'+esc((u.created_at||'').slice(0,10))+'</td><td>'+blkBtn+'</td></tr>';
+  }).join('') : '<tr><td colspan="5" class="muted" style="padding:18px">'+T('adm_empty','Пусто')+'</td></tr>';
+}
+
+async function renderOrders(){
+  var st=document.getElementById('o-filter').value;
+  var d=await api.adminOrders(st); var tb=document.getElementById('o-body');
+  tb.innerHTML=(d.items&&d.items.length)? d.items.map(function(o){
+    var sum=(o.price!=null&&o.status!=='draft')?(fmtNum(o.price)+' '+(o.currency||T('d_unit','у.е.'))):'—';
+    return '<tr class="row" onclick="location=\'order.html?id='+encodeURIComponent(o.id)+'\'"><td>'+esc(o.title||o.id)+'</td><td class="mono-cell">'+esc(o.client_email||'—')+'</td><td>'+statusBadge(o.status)+'</td><td>'+esc(sum)+'</td><td class="mono-cell">'+esc((o.updated_at||'').slice(0,10))+'</td></tr>';
+  }).join('') : '<tr><td colspan="5" class="muted" style="padding:18px">'+T('adm_empty','Пусто')+'</td></tr>';
+}
+
+async function renderTariffs(){
+  var d=await api.adminTariffs(); var tb=document.getElementById('t-body');
+  tb.innerHTML=(d.items&&d.items.length)? d.items.map(function(t){
+    return '<tr data-tid="'+esc(t.id)+'">'+
+      '<td><input class="tinp mono" data-f="code" value="'+esc(t.code)+'" style="width:120px"></td>'+
+      '<td><input class="tinp" data-f="title" value="'+esc(t.title||'')+'"></td>'+
+      '<td><input class="tinp mono" data-f="pricing_rule" value="'+esc(t.pricing_rule||'')+'"></td>'+
+      '<td style="text-align:center"><input type="checkbox" data-f="active" '+(t.active?'checked':'')+' style="width:18px;height:18px;accent-color:var(--accent)"></td>'+
+      '<td style="white-space:nowrap"><button class="act-btn" data-act="t-save">'+esc(T('adm_tar_save','Сохранить'))+'</button> <button class="act-btn danger" data-act="t-del">'+esc(T('adm_tar_del','Удалить'))+'</button></td></tr>';
+  }).join('') : '<tr><td colspan="5" class="muted" style="padding:18px">'+T('adm_empty','Пусто')+'</td></tr>';
+}
+
+// перерисовать активную вкладку (после смены языка)
+function rerender(){ var on=document.querySelector('.adm-tabs button.on'); if(on) load(on.getAttribute('data-tab'), true); }
+
+function set(id,v){ var el=document.getElementById(id); if(el) el.textContent=v; }
+
+// ===== действия (делегирование) =====
+document.getElementById('adm-body').addEventListener('change', async function(e){
+  var t=e.target;
+  if(t.matches('.rolesel[data-act="role"]')){
+    try{ await api.adminPatchUser(t.getAttribute('data-uid'),{role:t.value}); toast(T('adm_saved','Сохранено')); }catch(err){ toast(err.message,'error'); }
+  }
+});
+document.getElementById('adm-body').addEventListener('click', async function(e){
+  var t=e.target;
+  if(t.matches('[data-act="block"]')){
+    try{ await api.adminPatchUser(t.getAttribute('data-uid'),{status:t.getAttribute('data-to')}); toast(T('adm_saved','Сохранено')); await renderUsers(); }catch(err){ toast(err.message,'error'); }
+  }
+  else if(t.matches('[data-act="t-save"]')){
+    var tr=t.closest('tr'); var id=tr.getAttribute('data-tid');
+    var body={ code:tr.querySelector('[data-f="code"]').value, title:tr.querySelector('[data-f="title"]').value, pricing_rule:tr.querySelector('[data-f="pricing_rule"]').value, active:tr.querySelector('[data-f="active"]').checked?1:0 };
+    try{ await api.adminUpdateTariff(id,body); toast(T('adm_saved','Сохранено')); }catch(err){ toast(err.message,'error'); }
+  }
+  else if(t.matches('[data-act="t-del"]')){
+    var tr2=t.closest('tr'); var id2=tr2.getAttribute('data-tid');
+    try{ await api.adminDeleteTariff(id2); tr2.remove(); toast(T('adm_saved','Сохранено')); }catch(err){ toast(err.message,'error'); }
+  }
+});
+// поиск пользователей / фильтр заказов
+var _ut; document.getElementById('u-search').addEventListener('input', function(){ clearTimeout(_ut); _ut=setTimeout(renderUsers,300); });
+document.getElementById('o-filter').addEventListener('change', renderOrders);
+// добавить тариф
+document.getElementById('t-add').addEventListener('click', async function(){
+  var code=prompt(T('adm_tar_new_code','код')); if(!code) return;
+  var title=prompt(T('adm_tar_new_title','название'))||code;
+  try{ await api.adminCreateTariff({code:code,title:title,pricing_rule:'{"base":0,"per_module":true}',active:1}); toast(T('adm_saved','Сохранено')); await renderTariffs(); }catch(err){ toast(err.message,'error'); }
+});
+
+// ===== старт =====
+(async function(){
+  if(!requireAuth()) return;
+  try{
+    ME=(await api.me()).user;
+    document.getElementById('who').firstChild.textContent=ME.name||ME.email;
+    document.getElementById('who-sub').textContent=(ME.role||'client')+(ME.referral_code?' · '+ME.referral_code:'');
+    if(ME.role!=='admin'){ document.getElementById('guard').style.display='block'; return; }
+    document.getElementById('adm-body').style.display='block';
+    applyPlaceholders();
+    await load('overview');
+  }catch(e){ if(e.code==='unauthorized'){ location.href='login.html'; return; } toast(e.message,'error'); }
+})();
+</script>
+</body>
+</html>

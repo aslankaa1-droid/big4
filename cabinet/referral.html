@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Реферальная программа — BIG4 кабинет</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap&subset=cyrillic,cyrillic-ext,latin" rel="stylesheet">
+<link rel="stylesheet" href="../assets/big4.css"><link rel="stylesheet" href="cabinet.css">
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <a class="logo" href="dashboard.html"><svg viewBox="0 0 40 40" fill="none"><path d="M20 2 L35 11 V29 L20 38 L5 29 V11 Z" stroke="var(--accent-2)" stroke-width="1.4"/><path d="M14 26 L18.5 30.5 L27 19" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>BIG<span class="four">4</span></span></a>
+    <nav>
+      <a href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Обзор</a>
+      <a href="orders.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h14v16H5z"/><path d="M9 9h6M9 13h6M9 17h3"/></svg>Мои заказы</a>
+      <a href="new-order.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8" stroke-linecap="round"/></svg>Новый отчёт</a>
+      <a href="referral.html" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="9" r="3"/><circle cx="17" cy="15" r="3"/><path d="M9.5 10.5l5 3"/></svg>Реферальная программа</a>
+      <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>Профиль</a>
+      <a href="../index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>На сайт</a>
+    </nav>
+    <div class="side-foot"><div class="who" id="who">—<small id="who-sub">—</small></div></div>
+  </aside>
+
+  <div class="main-col">
+    <div class="topbar"><div><h1 data-i18n="cab_referral">Реферальная программа</h1></div></div>
+    <div class="content">
+
+      <div class="stats">
+        <div class="stat reveal"><div class="v" id="s-signup">—</div><div class="l" data-i18n="r_stat_invited">Приглашённых</div></div>
+        <div class="stat reveal"><div class="v" id="s-paid">—</div><div class="l" data-i18n="r_stat_paid">Оплатили заказ</div></div>
+        <div class="stat reveal"><div class="v" id="s-events">—</div><div class="l" data-i18n="r_stat_events">Событий</div></div>
+        <div class="stat reveal"><div class="v" id="s-bonus">—</div><div class="l" data-i18n="r_stat_bonus">Бонусный баланс</div></div>
+      </div>
+
+      <div class="panel reveal">
+        <h2 data-i18n="r_link_h">Ваша реферальная ссылка</h2>
+        <p class="muted" style="margin-bottom:14px" data-i18n="r_link_sub">Поделитесь ссылкой с партнёром. Он получит приветственную скидку, вы — бонусы и растущий статус.</p>
+        <div class="reflink">
+          <code id="rl">https://big4.example/r/BIG4-7F3A</code>
+          <button class="btn sm" onclick="cp()" data-i18n="r_copy">Скопировать</button>
+        </div>
+        <p class="hint" id="cpm" data-i18n="r_copied" style="margin-top:8px;visibility:hidden">Скопировано</p>
+      </div>
+
+      <div class="panel reveal">
+        <h2 data-i18n="r_how">Как это работает</h2>
+        <div class="mods three">
+          <div class="mod" style="cursor:default"><div><div class="t" data-i18n="r_how1_t">Вам — за каждого</div><div class="d" data-i18n="r_how1_d">Накопительная скидка и бонусные кредиты за каждого приведённого клиента.</div></div></div>
+          <div class="mod" style="cursor:default"><div><div class="t" data-i18n="r_how2_t">Партнёру — приветствие</div><div class="d" data-i18n="r_how2_d">Приглашённый получает скидку на первый сводный отчёт.</div></div></div>
+          <div class="mod" style="cursor:default"><div><div class="t" data-i18n="r_how3_t">B2B-программа</div><div class="d" data-i18n="r_how3_d">Консультанты и брокеры получают процент или бонусные кредиты.</div></div></div>
+        </div>
+      </div>
+
+      <div class="panel reveal">
+        <h2 data-i18n="r_history">История начислений</h2>
+        <table class="tbl">
+          <thead><tr><th data-i18n="r_th_event">Событие</th><th data-i18n="r_th_reward">Начисление</th><th data-i18n="r_th_date">Дата</th></tr></thead>
+          <tbody id="events"><tr><td colspan="3" class="muted" style="padding:18px" data-i18n="cab_loading">Загрузка…</td></tr></tbody>
+        </table>
+      </div>
+
+      <div class="notice reveal" data-i18n="r_notice">Бонусы можно направить на оплату ваших отчётов. Условия начислений — в разделе «Реферальная программа» на сайте.</div>
+
+    </div>
+  </div>
+</div>
+<div class="switch"><button data-t="dark" class="on">Dark</button><button data-t="light">Light</button><button data-t="sepia">Sepia</button></div>
+<script src="../assets/big4.js"></script>
+<script src="api.js"></script>
+<script src="../assets/countries.js"></script>
+<script src="../assets/i18n-cabinet.js"></script>
+<script src="cabinet-i18n.js"></script>
+<script src="../assets/i18n.js"></script>
+<script>
+function cp(){var t=document.getElementById('rl').textContent;
+  if(navigator.clipboard){navigator.clipboard.writeText(t);}
+  var m=document.getElementById('cpm');m.style.visibility='visible';setTimeout(function(){m.style.visibility='hidden';},1600);}
+(async function(){
+  if(!requireAuth()) return;
+  try{ var me=(await api.me()).user; document.getElementById('who').firstChild.textContent=me.name||me.email; document.getElementById('who-sub').textContent=(me.role||'client')+(me.referral_code?' · '+me.referral_code:''); }catch(e){ if(e.code==='unauthorized'){location.href='login.html';return;} }
+  try{
+    var r=await api.referral();
+    if(r.link) document.getElementById('rl').textContent=r.link;
+    else if(r.code) document.getElementById('rl').textContent=location.origin+'/r/'+r.code;
+    var ev=r.events||[];
+    document.getElementById('s-signup').textContent=ev.filter(function(x){return x.event==='signup';}).length;
+    document.getElementById('s-paid').textContent=ev.filter(function(x){return x.event==='first_paid_order';}).length;
+    document.getElementById('s-events').textContent=ev.length;
+    document.getElementById('s-bonus').textContent=new Intl.NumberFormat('ru-RU').format(r.bonus_balance||0)+' ₽';
+    var tb=document.getElementById('events');
+    var T=function(k,d){return (window.BIG4I18N&&window.BIG4I18N.t(k))||d;};
+    var label={signup:T('r_ev_signup','Регистрация по ссылке'),first_paid_order:T('r_ev_paid','Оплата первого заказа')};
+    tb.innerHTML= ev.length ? ev.map(function(x){
+      var rew=x.reward?'<span style="color:var(--v-excellent)">+'+new Intl.NumberFormat('ru-RU').format(x.reward)+' ₽</span>':'<span class="muted">'+T('r_bonus_pending','бонус при оплате')+'</span>';
+      return '<tr><td>'+esc(label[x.event]||x.event)+'</td><td>'+rew+'</td><td>'+esc((x.created_at||'').slice(0,10))+'</td></tr>';
+    }).join('') : '<tr><td colspan="3" class="muted" style="padding:18px">'+T('r_empty','Пока нет приглашённых. Поделитесь ссылкой выше.')+'</td></tr>';
+  }catch(e){ document.getElementById('events').innerHTML='<tr><td colspan="3" class="muted" style="padding:18px">'+esc(e.message)+'</td></tr>'; }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Вход — BIG4 кабинет</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap&subset=cyrillic,cyrillic-ext,latin" rel="stylesheet">
+<link rel="stylesheet" href="../assets/big4.css">
+<link rel="stylesheet" href="cabinet.css">
+<style>
+.auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px}
+.auth-card{width:100%;max-width:440px}
+.auth-card .brand{justify-content:center;margin-bottom:8px}
+.auth-card .tagline{text-align:center;color:var(--ink-soft);margin-bottom:30px;font-size:.92rem}
+.auth-card .panel{padding:32px}
+.auth-card .pane{display:none}.auth-card .pane.on{display:block}
+.back{position:fixed;top:22px;left:24px;text-decoration:none;color:var(--ink-soft);font-size:.84rem}
+.back:hover{color:var(--accent)}
+</style>
+</head>
+<body>
+<a class="back" href="../index.html" data-i18n="cab_login_back">← На сайт</a>
+<div class="auth-wrap">
+  <div class="auth-card">
+    <a class="brand" href="../index.html"><svg viewBox="0 0 40 40" fill="none"><path d="M20 2 L35 11 V29 L20 38 L5 29 V11 Z" stroke="var(--accent-2)" stroke-width="1.4"/><path d="M14 26 L18.5 30.5 L27 19" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>BIG<span class="four">4</span></span></a>
+    <div class="tagline" data-i18n="cab_login_tagline">Личный кабинет · сводные отчёты</div>
+    <div class="lang-switch" style="justify-content:center;width:max-content;margin:0 auto 22px"><button data-lang="ru">RU</button><button data-lang="en">EN</button><button data-lang="fr">FR</button><button data-lang="ar">AR</button></div>
+    <div class="panel">
+      <div class="tabs">
+        <button id="t-in" class="on" onclick="pane('in')" data-i18n="cab_login_in">Вход</button>
+        <button id="t-up" onclick="pane('up')" data-i18n="cab_login_up">Регистрация</button>
+      </div>
+
+      <div id="p-in" class="pane on">
+        <div class="field"><label data-i18n="cab_login_email">E-mail</label><input id="in-email" type="email" placeholder="you@company.com"></div>
+        <div class="field"><label data-i18n="cab_login_pass">Пароль</label><input id="in-pass" type="password" placeholder="••••••••"></div>
+        <button id="in-btn" class="btn" style="width:100%;justify-content:center" onclick="doLogin()" data-i18n="cab_login_btn_in">Войти</button>
+        <p class="hint" style="text-align:center;margin-top:14px"><a href="#" style="color:var(--accent);text-decoration:none" data-i18n="cab_login_forgot">Забыли пароль?</a></p>
+      </div>
+
+      <div id="p-up" class="pane">
+        <div class="field"><label data-i18n="cab_login_name">Имя или организация</label><input id="up-name" type="text" placeholder="ООО «Ромашка»"></div>
+        <div class="field"><label data-i18n="cab_login_email">E-mail</label><input id="up-email" type="email" placeholder="you@company.com"></div>
+        <div class="field"><label data-i18n="cab_login_pass">Пароль</label><input id="up-pass" type="password" placeholder="••••••••"></div>
+        <div class="field"><label data-i18n="cab_login_ref">Реферальный код</label><input id="up-ref" type="text" placeholder="BIG4-XXXX"></div>
+        <button id="up-btn" class="btn" style="width:100%;justify-content:center" onclick="doSignup()" data-i18n="cab_login_btn_up">Создать аккаунт</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="switch"><button data-t="dark" class="on">Dark</button><button data-t="light">Light</button><button data-t="sepia">Sepia</button></div>
+<script src="../assets/big4.js"></script>
+<script src="api.js"></script>
+<script src="../assets/countries.js"></script>
+<script src="../assets/i18n-cabinet.js"></script>
+<script src="../assets/i18n.js"></script>
+<script>
+function pane(p){['in','up'].forEach(function(x){document.getElementById('p-'+x).classList.toggle('on',x===p);document.getElementById('t-'+x).classList.toggle('on',x===p);});}
+if (api.isAuthed()) location.href = "dashboard.html";
+async function doLogin(){
+  var b=document.getElementById('in-btn'); b.disabled=true;
+  try{
+    await api.login({ email: val('in-email'), password: val('in-pass') });
+    location.href='dashboard.html';
+  }catch(e){ toast(e.message,'error'); b.disabled=false; }
+}
+async function doSignup(){
+  var b=document.getElementById('up-btn'); b.disabled=true;
+  try{
+    await api.register({ name: val('up-name'), email: val('up-email'), password: val('up-pass'), ref: val('up-ref') || undefined });
+    location.href='dashboard.html';
+  }catch(e){ toast(e.message,'error'); b.disabled=false; }
+}
+function val(id){ return document.getElementById(id).value.trim(); }
+['in-pass','up-pass'].forEach(function(id){ var el=document.getElementById(id); el.addEventListener('keydown',function(ev){ if(ev.key==='Enter'){ id==='in-pass'?doLogin():doSignup(); } }); });
+</script>
+</body>
+</html>

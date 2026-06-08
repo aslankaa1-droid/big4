@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Заказ — BIG4 кабинет</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap&subset=cyrillic,cyrillic-ext,latin" rel="stylesheet">
+<link rel="stylesheet" href="../assets/big4.css"><link rel="stylesheet" href="cabinet.css">
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <a class="logo" href="dashboard.html"><svg viewBox="0 0 40 40" fill="none"><path d="M20 2 L35 11 V29 L20 38 L5 29 V11 Z" stroke="var(--accent-2)" stroke-width="1.4"/><path d="M14 26 L18.5 30.5 L27 19" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>BIG<span class="four">4</span></span></a>
+    <nav>
+      <a href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Обзор</a>
+      <a href="orders.html" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h14v16H5z"/><path d="M9 9h6M9 13h6M9 17h3"/></svg>Мои заказы</a>
+      <a href="new-order.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8" stroke-linecap="round"/></svg>Новый отчёт</a>
+      <a href="referral.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="9" r="3"/><circle cx="17" cy="15" r="3"/><path d="M9.5 10.5l5 3"/></svg>Реферальная программа</a>
+      <a href="#" onclick="logout();return false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 4h4a2 2 0 012 2v12a2 2 0 01-2 2h-4"/><path d="M9 16l-4-4 4-4M5 12h11" stroke-linecap="round" stroke-linejoin="round"/></svg>Выйти</a>
+      <a href="../index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>На сайт</a>
+    </nav>
+    <div class="side-foot"><div class="who" id="who">—<small id="who-sub">—</small></div></div>
+  </aside>
+
+  <div class="main-col">
+    <div class="topbar"><div><h1 id="o-id">Заказ</h1><div class="sub" id="o-title">—</div></div><a href="orders.html" class="btn ghost sm" data-i18n="o_back">← К заказам</a></div>
+    <div class="content" id="content">
+      <div class="panel"><p class="muted">Загрузка…</p></div>
+    </div>
+  </div>
+</div>
+<div class="switch"><button data-t="dark" class="on">Dark</button><button data-t="light">Light</button><button data-t="sepia">Sepia</button></div>
+<script src="../assets/big4.js"></script>
+<script src="api.js"></script>
+<script src="../assets/countries.js"></script>
+<script src="../assets/i18n-cabinet.js"></script>
+<script src="cabinet-i18n.js"></script>
+<script src="../assets/i18n.js"></script>
+<script>
+function T(k,d){return (window.BIG4I18N&&window.BIG4I18N.t(k))||d;}
+function modTitle(code){return code==='publish'?T('mod_publish','Публикация'):T('svc_'+code+'_t',code);}
+var MS_CLS={queued:"s-proc",processing:"s-proc",done:"s-ready",failed:"s-wait"};
+function msLabel(s){return T('ms_'+s,s);}
+var V_CLS={excellent:"ex",good:"gd",bad:"bd",fatal:"ft"};
+function vLabel(v){return T('verdict_'+(V_CLS[v]||'gd'),v);}
+var PROG={awaiting_payment:1,queued:2,processing:3,in_review:4,ready:5,published:6};
+var STEP_KEYS=["st_request","st_pay","st_queue","st_proc","st_review","st_ready","st_pub"];
+var STEP_DEF=["Заявка","Оплата","Очередь","Обработка","Проверка","Готов","Публикация"];
+var orderId=new URLSearchParams(location.search).get('id');
+
+(async function(){
+  if(!requireAuth()) return;
+  try{ var me=(await api.me()).user; document.getElementById('who').firstChild.textContent=me.name||me.email; document.getElementById('who-sub').textContent=(me.role||'client')+(me.referral_code?' · '+me.referral_code:''); }catch(e){ if(e.code==='unauthorized'){location.href='login.html';return;} }
+  if(!orderId){ document.getElementById('content').innerHTML='<div class="panel"><p class="muted">Заказ не указан. <a href="orders.html" style="color:var(--accent)">К списку →</a></p></div>'; return; }
+  await render();
+})();
+
+async function render(){
+  var c=document.getElementById('content');
+  var data;
+  try{ data=await api.getOrder(orderId); }catch(e){ c.innerHTML='<div class="panel"><p class="muted">'+esc(e.message)+'</p></div>'; return; }
+  var o=data.order, mods=data.modules||[], files=data.files||[];
+  document.getElementById('o-id').textContent=(o.title? '': 'Заказ ')+ (shortId(o.id));
+  document.getElementById('o-id').textContent=shortId(o.id);
+  document.getElementById('o-title').textContent=o.title||'—';
+
+  var report=null;
+  if(['in_review','ready','published'].includes(o.status)){ try{ report=await api.getReport(orderId); }catch(_){} }
+
+  var html='';
+  // статус + степпер
+  html+='<div class="panel reveal"><div class="ph"><h2>'+T('o_status','Статус заказа')+'</h2>'+statusBadge(o.status)+'</div>';
+  if(o.status==='failed'){ html+='<p class="muted">'+T('o_failed','Обработка завершилась ошибкой. Поддержка уже уведомлена.')+'</p>'; }
+  else if(o.status==='cancelled'){ html+='<p class="muted">'+T('o_cancelled','Заказ отменён.')+'</p>'; }
+  else { html+='<div class="stepper">'+stepperHtml(o.status)+'</div>'; }
+  if(report&&report.report&&report.report.overall_verdict){ var ovc=report.report.overall_verdict; html+='<p style="margin-top:14px">'+T('o_overall','Сквозной вердикт:')+' <span class="chip '+(V_CLS[ovc]||'gd')+'" style="padding:6px 12px;font-size:.66rem"><span class="pip"></span>'+esc(vLabel(ovc))+'</span></p>'; }
+  if(o.status==='awaiting_payment'){ html+='<div style="margin-top:16px"><button class="btn" onclick="doPay()">'+T('o_pay','Оплатить')+' '+esc(o.price!=null?o.price+' '+T('d_unit','у.е.'):'')+' '+T('o_pay_sim','(имитация)')+'</button><p class="hint" style="margin-top:8px">'+T('o_pay_hint','До интеграции платёжного провайдера оплата имитируется и сразу ставит заказ в обработку.')+'</p></div>'; }
+  html+='</div>';
+
+  // модули
+  html+='<div class="panel reveal"><h2>'+T('o_modules','Модули заказа')+'</h2><table class="tbl"><thead><tr><th>'+T('o_th_module','Модуль')+'</th><th>'+T('o_th_status','Статус')+'</th><th>'+T('o_th_verdict','Вердикт')+'</th></tr></thead><tbody>';
+  var verdicts=(report&&report.report&&report.report.structure)?(JSON.parse(report.report.structure).modules||[]):[];
+  mods.forEach(function(m){
+    var cls=MS_CLS[m.status]||"s-draft";
+    var mv=verdicts.find(function(x){return x.code===m.module_code;});
+    var vchip='—';
+    if(mv&&mv.verdict){ vchip='<span class="chip '+(V_CLS[mv.verdict]||'gd')+'" style="padding:5px 11px;font-size:.6rem"><span class="pip"></span>'+esc(vLabel(mv.verdict))+'</span>'; }
+    html+='<tr><td>'+esc(modTitle(m.module_code))+'</td><td><span class="badge '+cls+'"><span class="d"></span>'+esc(msLabel(m.status))+'</span></td><td>'+vchip+'</td></tr>';
+  });
+  if(!mods.length) html+='<tr><td colspan="3" class="muted">'+T('o_modules_none','Модули не заданы')+'</td></tr>';
+  html+='</tbody></table></div>';
+
+  // находки / дорожная карта
+  if(report&&report.findings&&report.findings.length){
+    html+='<div class="panel reveal"><h2>'+T('o_findings','Находки и дорожная карта')+'</h2>';
+    report.findings.forEach(function(f){
+      var sev={low:'var(--ink-soft)',medium:'var(--v-good)',high:'var(--v-bad)',stopper:'var(--v-fatal)'}[f.severity]||'var(--ink-soft)';
+      html+='<div style="padding:14px 0;border-bottom:1px solid var(--line)"><div style="display:flex;gap:10px;align-items:center"><span class="mono" style="color:'+sev+';font-size:.62rem">'+esc(T('sev_'+f.severity,(f.severity||'')).toUpperCase())+'</span><strong>'+esc(f.title)+'</strong></div>';
+      if(f.evidence) html+='<p class="muted" style="margin:6px 0 0;font-size:.88rem">'+esc(f.evidence)+'</p>';
+      if(f.recommendation) html+='<p style="margin:6px 0 0;font-size:.88rem">→ '+esc(f.recommendation)+'</p>';
+      html+='</div>';
+    });
+    html+='</div>';
+  }
+
+  // файлы
+  html+='<div class="panel reveal"><h2>'+T('o_materials','Материалы')+'</h2><div class="filelist">';
+  if(files.length){ files.forEach(function(f){
+    var scan=f.scan_status&&f.scan_status!=='n/a'?(' · '+({clean:T('o_clean','✓ чисто'),flagged:'⚠',high_risk:'⚠⚠'}[f.scan_status]||f.scan_status)):'';
+    html+='<div class="f"><span><a href="#" onclick="dl(\''+f.id+'\',\''+esc(f.filename).replace(/'/g,"\\'")+'\');return false" style="color:var(--accent);text-decoration:none">'+esc(f.filename)+'</a></span><span class="sz">'+Math.max(1,Math.round((f.size||0)/1024))+' KB'+esc(scan)+'</span></div>';
+  }); } else html+='<p class="muted">'+T('o_no_files','Файлы не приложены')+'</p>';
+  html+='</div></div>';
+
+  // готовые документы
+  var r=report&&report.report;
+  var ready=r&&r.html_key;
+  html+='<div class="panel reveal"><div class="ph"><h2>'+T('o_docs','Готовые документы')+'</h2>'+(ready?'':'<span class="hint">'+T('o_docs_wait','появятся после заверения экспертом')+'</span>')+'</div>';
+  if(ready){
+    html+='<div class="dls">'+
+      '<a class="dl" href="#" onclick="openDoc();return false"><span class="fmt">HTML</span> '+T('o_open','Открыть отчёт')+'</a>'+
+      (r.docx_key?'<a class="dl" href="#" onclick="downloadDoc(\'docx\');return false"><span class="fmt">DOCX</span> '+T('o_word','Скачать Word')+'</a>':'')+
+      '</div><p class="hint" style="margin-top:10px">'+T('o_pdf_hint','PDF — кнопкой «Печать / Сохранить PDF» в открытом отчёте.')+'</p>';
+  } else {
+    html+='<div class="dls"><span class="dl" style="opacity:.5"><span class="fmt">HTML</span> Отчёт</span><span class="dl" style="opacity:.5"><span class="fmt">DOCX</span> Word</span></div>';
+  }
+  html+='</div>';
+
+  // публикация
+  if(['ready','published'].includes(o.status)){
+    html+='<div class="panel reveal"><h2>'+T('o_publish','Публикация отчёта')+'</h2>'+
+      (o.status==='published'?'<p class="muted">'+T('o_published','Отчёт опубликован.')+'</p>':
+      '<p class="muted" style="margin-bottom:14px">'+T('o_publish_intro','Опубликуйте отчёт на домене BIG4.')+'</p>'+
+      '<div class="mods" style="grid-template-columns:1fr 1fr"><label class="mod"><input type="radio" name="pub" value="open"><div><div class="t">'+T('o_pub_open','Открытая страница')+'</div><div class="d">'+T('o_pub_open_d','Витрина проекта')+'</div></div></label>'+
+      '<label class="mod sel"><input type="radio" name="pub" value="private" checked><div><div class="t">'+T('o_pub_priv','Под паролем (PIN)')+'</div><div class="d">'+T('o_pub_priv_d','Приватный доступ')+'</div></div></label></div>'+
+      '<div class="field" id="pin-field" style="margin-top:14px"><label>'+T('o_pin','PIN-код')+'</label><input id="pin" type="text" placeholder="123456"></div>'+
+      '<button class="btn" onclick="doPublish()">'+T('o_publish_btn','Опубликовать')+'</button>')+
+      '</div>';
+  }
+
+  c.innerHTML=html;
+  // показать reveal
+  c.querySelectorAll('.reveal').forEach(function(el){el.classList.add('in');});
+}
+
+function stepperHtml(status){
+  var p=PROG[status]; var out='';
+  for(var i=0;i<STEP_KEYS.length;i++){ var cls=i<p?'done':(i===p?'cur':''); out+='<div class="st '+cls+'"><span class="dot"></span><div class="lbl">'+T(STEP_KEYS[i],STEP_DEF[i])+'</div></div>'; }
+  return out;
+}
+function shortId(id){ return 'Заказ '+String(id).slice(-6).toUpperCase(); }
+function apiBase(){ return (localStorage.getItem('big4-api')||'http://localhost:8787/api/v1').replace(/\/$/,''); }
+async function fetchDoc(fmt){
+  var res=await fetch(apiBase()+'/orders/'+orderId+'/document/'+fmt,{headers:{Authorization:'Bearer '+localStorage.getItem('big4-access')}});
+  if(!res.ok){ toast(T('err_doc','Документ недоступен'),'error'); return null; }
+  return await res.blob();
+}
+async function openDoc(){ var b=await fetchDoc('html'); if(!b)return; var u=URL.createObjectURL(b); window.open(u,'_blank'); }
+async function downloadDoc(fmt){ var b=await fetchDoc(fmt); if(!b)return; var u=URL.createObjectURL(b); var a=document.createElement('a'); a.href=u; a.download='BIG4-'+String(orderId).slice(-6)+'.'+fmt; a.click(); URL.revokeObjectURL(u); }
+
+async function doPay(){
+  try{ await api.pay(orderId); toast(T('t_paid','Оплата принята, заказ в обработке')); await render(); }
+  catch(e){ toast(e.message,'error'); }
+}
+async function doPublish(){
+  var mode=(document.querySelector('input[name=pub]:checked')||{}).value||'private';
+  var pin=(document.getElementById('pin')||{}).value;
+  try{ var r=await api.publish(orderId,{mode:mode,pin:mode==='private'?pin:undefined,expires_in_days:30}); toast(T('t_pub_ok','Опубликовано:')+' '+r.url); await render(); }
+  catch(e){ toast(e.message,'error'); }
+}
+async function dl(fileId,name){
+  try{
+    var base=(localStorage.getItem('big4-api')||'http://localhost:8787/api/v1').replace(/\/$/,'');
+    var res=await fetch(base+'/files/'+fileId+'/download',{headers:{Authorization:'Bearer '+localStorage.getItem('big4-access')}});
+    if(!res.ok){ toast(T('err_doc','Документ недоступен'),'error'); return; }
+    var blob=await res.blob(); var u=URL.createObjectURL(blob);
+    var a=document.createElement('a'); a.href=u; a.download=name||'file'; a.click(); URL.revokeObjectURL(u);
+  }catch(e){ toast(T('err_download','Ошибка скачивания'),'error'); }
+}
+</script>
+</body>
+</html>

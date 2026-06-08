@@ -69,12 +69,12 @@ section:first-of-type{border-top:0}
 .sec-head p{color:var(--ink-soft);margin-top:16px;font-size:1.08rem}
 
 /* page hero (internal) */
-.page-hero{padding:72px 0 40px;position:relative}
+.page-hero{padding:72px 0 40px;position:relative;overflow-x:clip}
 .page-hero::before{content:"";position:absolute;top:-120px;right:-160px;width:520px;height:520px;border-radius:50%;
   background:radial-gradient(circle,color-mix(in srgb,var(--accent) 20%,transparent),transparent 62%);filter:blur(22px);z-index:-1}
 .crumb{font-family:var(--mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:22px}
 .crumb a{text-decoration:none;color:var(--accent)}
-.page-hero h1{font-family:var(--serif);font-weight:900;font-size:clamp(2.3rem,5.4vw,4rem);line-height:1.05;letter-spacing:-.01em;max-width:18ch}
+.page-hero h1{font-family:var(--serif);font-weight:900;font-size:clamp(2.3rem,5.4vw,4rem);line-height:1.05;letter-spacing:-.01em;max-width:18ch;overflow-wrap:break-word}
 .page-hero h1 em{font-style:italic;color:var(--accent);font-weight:500}
 .page-hero .lede{margin-top:22px;font-size:clamp(1.04rem,2vw,1.25rem);color:var(--ink-soft);max-width:62ch}
 
@@ -175,3 +175,24 @@ html[dir="rtl"] body{font-family:'Noto Naskh Arabic',var(--sans)}
   padding:8px 13px;font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;transition:.3s}
 .switch button.on{background:var(--accent);color:var(--accent-ink)}
 .switch button:hover:not(.on){color:var(--ink)}
+
+/* --- мелкие экраны: компактные отступы, читаемость --- */
+@media(max-width:700px){
+  section{padding:64px 0}
+  .sec-head{margin-bottom:38px}
+}
+@media(max-width:600px){
+  .wrap{padding:0 20px}
+  section{padding:54px 0}
+  .page-hero{padding:46px 0 24px}
+  .page-hero h1{font-size:clamp(1.7rem,7.4vw,2.3rem)}
+  .bar{height:64px}
+  .brand{font-size:1.3rem}
+  .brand svg{width:30px;height:30px}
+  .prose h2{font-size:1.45rem;margin:36px 0 14px}
+  .svc{padding:26px 0;gap:18px}
+  .callout{padding:20px 22px}
+  footer{padding:38px 0 90px}
+}
+/* увеличенная нижняя зона на мобильных, чтобы фикс. переключатель темы не накрывал контент */
+@media(max-width:600px){ .foot{justify-content:center;text-align:center} }

@@ -165,4 +165,66 @@
     r_stat_invited: "المدعوون", r_stat_paid: "دفعوا طلباً", r_stat_events: "الأحداث", r_stat_bonus: "رصيد المكافآت",
     eo_back: "← إلى الطابور",
   });
+
+  // --- админ-панель (КД-03 §9) ---
+  add("ru", {
+    cab_admin: "Админ",
+    adm_title: "Администрирование", adm_sub: "Платформа · управление",
+    adm_tab_overview: "Обзор", adm_tab_users: "Пользователи", adm_tab_orders: "Заказы", adm_tab_tariffs: "Тарифы", adm_tab_audit: "Журнал",
+    adm_m_users: "Пользователей", adm_m_orders: "Заказов всего", adm_m_review: "На проверке", adm_m_revenue: "Выручка (оплачено)", adm_m_experts: "Экспертов",
+    adm_users_h: "Пользователи и роли", adm_search: "Поиск по e-mail или имени…",
+    adm_th_user: "Пользователь", adm_th_role: "Роль", adm_th_status: "Статус", adm_th_reg: "Регистрация", adm_th_act: "Действия",
+    role_client: "Клиент", role_expert: "Эксперт", role_admin: "Админ", role_partner: "Партнёр",
+    ust_active: "Активен", ust_blocked: "Заблокирован", adm_block: "Заблокировать", adm_unblock: "Разблокировать",
+    adm_orders_h: "Все заказы", adm_filter_all: "Все статусы", adm_th_order: "Заказ", adm_th_client: "Клиент", adm_th_sum: "Сумма", adm_th_upd: "Обновлён",
+    adm_tariffs_h: "Тарифы", adm_th_code: "Код", adm_th_title: "Название", adm_th_price: "Правило цены (JSON)", adm_th_on: "Активен",
+    adm_tar_save: "Сохранить", adm_tar_del: "Удалить", adm_tar_add: "+ Добавить тариф", adm_tar_new_code: "код", adm_tar_new_title: "название",
+    adm_audit_h: "Журнал действий", adm_th_time: "Время", adm_th_actor: "Инициатор", adm_th_action: "Действие", adm_th_obj: "Объект",
+    adm_self_note: "Собственную учётную запись изменить нельзя.", adm_saved: "Сохранено", adm_empty: "Пусто", adm_not_admin: "Раздел доступен только администраторам",
+  });
+  add("en", {
+    cab_admin: "Admin",
+    adm_title: "Administration", adm_sub: "Platform · management",
+    adm_tab_overview: "Overview", adm_tab_users: "Users", adm_tab_orders: "Orders", adm_tab_tariffs: "Tariffs", adm_tab_audit: "Audit log",
+    adm_m_users: "Users", adm_m_orders: "Orders total", adm_m_review: "In review", adm_m_revenue: "Revenue (paid)", adm_m_experts: "Experts",
+    adm_users_h: "Users and roles", adm_search: "Search by e-mail or name…",
+    adm_th_user: "User", adm_th_role: "Role", adm_th_status: "Status", adm_th_reg: "Registered", adm_th_act: "Actions",
+    role_client: "Client", role_expert: "Expert", role_admin: "Admin", role_partner: "Partner",
+    ust_active: "Active", ust_blocked: "Blocked", adm_block: "Block", adm_unblock: "Unblock",
+    adm_orders_h: "All orders", adm_filter_all: "All statuses", adm_th_order: "Order", adm_th_client: "Client", adm_th_sum: "Amount", adm_th_upd: "Updated",
+    adm_tariffs_h: "Tariffs", adm_th_code: "Code", adm_th_title: "Title", adm_th_price: "Pricing rule (JSON)", adm_th_on: "Active",
+    adm_tar_save: "Save", adm_tar_del: "Delete", adm_tar_add: "+ Add tariff", adm_tar_new_code: "code", adm_tar_new_title: "title",
+    adm_audit_h: "Action log", adm_th_time: "Time", adm_th_actor: "Actor", adm_th_action: "Action", adm_th_obj: "Object",
+    adm_self_note: "You cannot change your own account.", adm_saved: "Saved", adm_empty: "Empty", adm_not_admin: "Section available to admins only",
+  });
+  add("fr", {
+    cab_admin: "Admin",
+    adm_title: "Administration", adm_sub: "Plateforme · gestion",
+    adm_tab_overview: "Aperçu", adm_tab_users: "Utilisateurs", adm_tab_orders: "Commandes", adm_tab_tariffs: "Tarifs", adm_tab_audit: "Journal",
+    adm_m_users: "Utilisateurs", adm_m_orders: "Commandes au total", adm_m_review: "En vérification", adm_m_revenue: "Revenu (payé)", adm_m_experts: "Experts",
+    adm_users_h: "Utilisateurs et rôles", adm_search: "Recherche par e-mail ou nom…",
+    adm_th_user: "Utilisateur", adm_th_role: "Rôle", adm_th_status: "Statut", adm_th_reg: "Inscrit le", adm_th_act: "Actions",
+    role_client: "Client", role_expert: "Expert", role_admin: "Admin", role_partner: "Partenaire",
+    ust_active: "Actif", ust_blocked: "Bloqué", adm_block: "Bloquer", adm_unblock: "Débloquer",
+    adm_orders_h: "Toutes les commandes", adm_filter_all: "Tous les statuts", adm_th_order: "Commande", adm_th_client: "Client", adm_th_sum: "Montant", adm_th_upd: "Mis à jour",
+    adm_tariffs_h: "Tarifs", adm_th_code: "Code", adm_th_title: "Titre", adm_th_price: "Règle de prix (JSON)", adm_th_on: "Actif",
+    adm_tar_save: "Enregistrer", adm_tar_del: "Supprimer", adm_tar_add: "+ Ajouter un tarif", adm_tar_new_code: "code", adm_tar_new_title: "titre",
+    adm_audit_h: "Journal des actions", adm_th_time: "Heure", adm_th_actor: "Auteur", adm_th_action: "Action", adm_th_obj: "Objet",
+    adm_self_note: "Vous ne pouvez pas modifier votre propre compte.", adm_saved: "Enregistré", adm_empty: "Vide", adm_not_admin: "Section réservée aux administrateurs",
+  });
+  add("ar", {
+    cab_admin: "الإدارة",
+    adm_title: "الإدارة", adm_sub: "المنصّة · الإدارة",
+    adm_tab_overview: "نظرة عامة", adm_tab_users: "المستخدمون", adm_tab_orders: "الطلبات", adm_tab_tariffs: "التعرفات", adm_tab_audit: "السجل",
+    adm_m_users: "المستخدمون", adm_m_orders: "إجمالي الطلبات", adm_m_review: "قيد المراجعة", adm_m_revenue: "الإيراد (مدفوع)", adm_m_experts: "الخبراء",
+    adm_users_h: "المستخدمون والأدوار", adm_search: "ابحث بالبريد أو الاسم…",
+    adm_th_user: "المستخدم", adm_th_role: "الدور", adm_th_status: "الحالة", adm_th_reg: "التسجيل", adm_th_act: "إجراءات",
+    role_client: "عميل", role_expert: "خبير", role_admin: "مدير", role_partner: "شريك",
+    ust_active: "نشط", ust_blocked: "محظور", adm_block: "حظر", adm_unblock: "إلغاء الحظر",
+    adm_orders_h: "كل الطلبات", adm_filter_all: "كل الحالات", adm_th_order: "الطلب", adm_th_client: "العميل", adm_th_sum: "المبلغ", adm_th_upd: "آخر تحديث",
+    adm_tariffs_h: "التعرفات", adm_th_code: "الرمز", adm_th_title: "العنوان", adm_th_price: "قاعدة السعر (JSON)", adm_th_on: "نشط",
+    adm_tar_save: "حفظ", adm_tar_del: "حذف", adm_tar_add: "+ إضافة تعرفة", adm_tar_new_code: "الرمز", adm_tar_new_title: "العنوان",
+    adm_audit_h: "سجل الإجراءات", adm_th_time: "الوقت", adm_th_actor: "المنفِّذ", adm_th_action: "الإجراء", adm_th_obj: "الكائن",
+    adm_self_note: "لا يمكنك تغيير حسابك الخاص.", adm_saved: "حُفِظ", adm_empty: "فارغ", adm_not_admin: "القسم متاح للمديرين فقط",
+  });
 })();

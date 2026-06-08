@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Новый отчёт — BIG4 кабинет</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap&subset=cyrillic,cyrillic-ext,latin" rel="stylesheet">
+<link rel="stylesheet" href="../assets/big4.css"><link rel="stylesheet" href="cabinet.css">
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <a class="logo" href="dashboard.html"><svg viewBox="0 0 40 40" fill="none"><path d="M20 2 L35 11 V29 L20 38 L5 29 V11 Z" stroke="var(--accent-2)" stroke-width="1.4"/><path d="M14 26 L18.5 30.5 L27 19" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>BIG<span class="four">4</span></span></a>
+    <nav>
+      <a href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Обзор</a>
+      <a href="orders.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h14v16H5z"/><path d="M9 9h6M9 13h6M9 17h3"/></svg>Мои заказы</a>
+      <a href="new-order.html" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8" stroke-linecap="round"/></svg>Новый отчёт</a>
+      <a href="referral.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="9" r="3"/><circle cx="17" cy="15" r="3"/><path d="M9.5 10.5l5 3"/></svg>Реферальная программа</a>
+      <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>Профиль</a>
+      <a href="../index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>На сайт</a>
+    </nav>
+    <div class="side-foot"><div class="who" id="who">—<small id="who-sub">—</small></div></div>
+  </aside>
+
+  <div class="main-col">
+    <div class="topbar"><div><h1 data-i18n="cab_new">Новый сводный отчёт</h1></div></div>
+    <div class="content">
+      <div class="order-grid">
+        <div>
+          <div class="panel reveal">
+            <h2 data-i18n="no_about">1. О проекте</h2>
+            <div class="field"><label data-i18n="no_title_l">Название заказа</label><input id="o-title" type="text" placeholder="Например: Оценка доли в проекте X"></div>
+            <div class="field"><label data-i18n="no_context_l">Цель и контекст</label><textarea id="o-context" placeholder="Опишите проект, цель отчёта, юрисдикцию, на какие вопросы нужен ответ"></textarea></div>
+            <div class="field"><label data-i18n="no_urgency_l">Срочность</label><select id="o-urgency"><option value="standard" data-i18n="no_urg_std">Стандартная</option><option value="express" data-i18n="no_urg_exp">Ускоренная (наценка)</option></select></div>
+          </div>
+
+          <div class="panel reveal">
+            <h2 data-i18n="no_modules">2. Модули отчёта</h2>
+            <p class="muted" style="margin-bottom:16px" data-i18n="no_modules_sub">Выберите нужное. Один заказ может включать несколько модулей.</p>
+            <div class="mods">
+              <label class="mod" data-code="expertise" data-p="40"><input type="checkbox" onchange="tog(this)"><div><div class="t" data-i18n="svc_expertise_t">Полная честная экспертиза</div><div class="d" data-i18n="svc_expertise_d">Универсальный аудит с вердиктом</div></div></label>
+              <label class="mod" data-code="valuation" data-p="35"><input type="checkbox" onchange="tog(this)"><div><div class="t" data-i18n="svc_valuation_t">Оценка бизнеса / проекта</div><div class="d" data-i18n="svc_valuation_d">Стоимость и обоснование</div></div></label>
+              <label class="mod" data-code="ip" data-p="30"><input type="checkbox" onchange="tog(this)"><div><div class="t" data-i18n="svc_ip_t">Оценка ИС</div><div class="d" data-i18n="svc_ip_d">Патенты, ПО, ноу-хау</div></div></label>
+              <label class="mod" data-code="finmodel" data-p="30"><input type="checkbox" onchange="tog(this)"><div><div class="t" data-i18n="svc_finmodel_t">Финмодель / бизнес-план</div><div class="d" data-i18n="svc_finmodel_d">Проверка и построение</div></div></label>
+              <label class="mod" data-code="ma" data-p="50"><input type="checkbox" onchange="tog(this)"><div><div class="t" data-i18n="svc_ma_t">Инвест-сделка / M&amp;A</div><div class="d" data-i18n="svc_ma_d">Due diligence под сделку</div></div></label>
+              <label class="mod" data-code="legal" data-p="25"><input type="checkbox" onchange="tog(this)"><div><div class="t" data-i18n="svc_legal_t">Проверка юр-документов</div><div class="d" data-i18n="svc_legal_d">Договоры, NDA, SPA, SHA</div></div></label>
+              <label class="mod" data-code="compliance" data-p="25"><input type="checkbox" onchange="tog(this)"><div><div class="t" data-i18n="svc_compliance_t">Соответствие законодательству</div><div class="d" data-i18n="svc_compliance_d">Комплаенс и риски</div></div></label>
+              <label class="mod" data-code="spyware" data-p="20"><input type="checkbox" onchange="tog(this)"><div><div class="t" data-i18n="svc_spyware_t">Скан шпионских включений</div><div class="d" data-i18n="svc_spyware_d">Трекеры, макросы, метаданные</div></div></label>
+              <label class="mod" data-code="industry" data-p="30"><input type="checkbox" onchange="tog(this)"><div><div class="t" data-i18n="svc_industry_t">Отраслевой аудит</div><div class="d" data-i18n="svc_industry_d">8 отраслей на выбор</div></div></label>
+              <label class="mod" data-code="roadmap" data-p="0"><input type="checkbox" checked disabled><div><div class="t" data-i18n="svc_roadmap_t">Дорожная карта</div><div class="d" data-i18n="svc_roadmap_d">Входит в каждый отчёт</div></div></label>
+            </div>
+          </div>
+
+          <div class="panel reveal">
+            <h2 data-i18n="no_materials">3. Материалы</h2>
+            <p class="muted" style="margin-bottom:16px" data-i18n="no_materials_sub">Чем полнее данные, тем точнее вердикт. Файлы шифруются и не уходят в обучение публичных моделей.</p>
+            <label class="drop" for="fz">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 16V4M7 9l5-5 5 5" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 17v2a1 1 0 001 1h14a1 1 0 001-1v-2"/></svg>
+              <div data-i18n="no_drop">Перетащите файлы сюда или нажмите для выбора</div>
+              <div class="hint" style="margin-top:8px" data-i18n="no_drop_hint">DOCX · XLSX · PPTX · PDF · ZIP · изображения</div>
+            </label>
+            <input id="fz" type="file" multiple style="display:none" onchange="addf(this)">
+            <div class="filelist" id="fl"></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="panel quote reveal">
+            <h2 style="font-size:1.1rem" data-i18n="no_quote">Смета</h2>
+            <p class="muted" style="font-size:.82rem;margin-bottom:14px" data-i18n="no_quote_sub">Предварительный расчёт. Итог подтвердит оператор.</p>
+            <div id="qrows"><div class="row" style="color:var(--ink-soft)"><span data-i18n="n_quote_none">Модули не выбраны</span><span class="v">—</span></div></div>
+            <div class="row total"><span data-i18n="no_total">Итого, у.е.</span><span class="v" id="qtot">0</span></div>
+            <button id="submit-btn" class="btn" style="width:100%;justify-content:center;margin-top:18px" onclick="submitOrder()" data-i18n="no_submit">Отправить заявку</button>
+            <p class="hint" style="text-align:center;margin-top:10px" data-i18n="no_pay_after">Оплата — после согласования сметы</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="switch"><button data-t="dark" class="on">Dark</button><button data-t="light">Light</button><button data-t="sepia">Sepia</button></div>
+<script src="../assets/big4.js"></script>
+<script src="api.js"></script>
+<script src="../assets/countries.js"></script>
+<script src="../assets/i18n-cabinet.js"></script>
+<script src="cabinet-i18n.js"></script>
+<script src="../assets/i18n.js"></script>
+<script>
+if(!requireAuth()){}
+(async function(){ try{ var me=(await api.me()).user; document.getElementById('who').firstChild.textContent=me.name||me.email; document.getElementById('who-sub').textContent=(me.role||'client')+(me.referral_code?' · '+me.referral_code:''); }catch(e){ if(e.code==='unauthorized') location.href='login.html'; } })();
+var selectedFiles = [];
+function T(k,d){ return (window.BIG4I18N&&window.BIG4I18N.t(k))||d; }
+function tog(cb){
+  var m=cb.closest('.mod'); m.classList.toggle('sel',cb.checked); recalc();
+}
+function recalc(){
+  var rows='', tot=0, any=false;
+  document.querySelectorAll('.mod').forEach(function(m){
+    var cb=m.querySelector('input'); if(cb.checked && !cb.disabled){
+      any=true; var p=+m.dataset.p, t=m.querySelector('.t').textContent;
+      tot+=p; rows+='<div class="row"><span>'+t+'</span><span class="v">'+p+'</span></div>';
+    }
+  });
+  document.getElementById('qrows').innerHTML = any?rows:'<div class="row" style="color:var(--ink-soft)"><span>'+T('n_quote_none','Модули не выбраны')+'</span><span class="v">—</span></div>';
+  document.getElementById('qtot').textContent = tot;
+}
+function addf(inp){
+  var fl=document.getElementById('fl');
+  Array.prototype.forEach.call(inp.files,function(f){
+    selectedFiles.push(f);
+    var kb=Math.max(1,Math.round(f.size/1024));
+    var d=document.createElement('div'); d.className='f';
+    d.innerHTML='<span>'+esc(f.name)+'</span><span class="sz">'+kb+' КБ</span>';
+    fl.appendChild(d);
+  });
+  inp.value='';
+}
+function selectedModules(){
+  var out=[];
+  document.querySelectorAll('.mod').forEach(function(m){
+    var cb=m.querySelector('input');
+    if(cb.checked && !cb.disabled && m.dataset.code) out.push({ module_code: m.dataset.code });
+  });
+  return out;
+}
+async function submitOrder(){
+  var mods=selectedModules();
+  if(!mods.length){ toast(T('n_pick_module','Выберите хотя бы один модуль'),'error'); return; }
+  var b=document.getElementById('submit-btn'); b.disabled=true; var orig=b.textContent;
+  try{
+    b.textContent=T('n_creating','Создание заказа…');
+    var o=await api.createOrder({
+      title: document.getElementById('o-title').value.trim() || 'Без названия',
+      context: document.getElementById('o-context').value.trim(),
+      urgency: document.getElementById('o-urgency').value,
+    });
+    await api.setModules(o.id, mods);
+    for(var i=0;i<selectedFiles.length;i++){
+      b.textContent=T('n_uploading','Загрузка файлов')+' '+(i+1)+'/'+selectedFiles.length+'…';
+      await api.uploadFile(o.id, selectedFiles[i]);
+    }
+    b.textContent=T('n_sending','Отправка…');
+    await api.submit(o.id);
+    toast(T('n_sent','Заявка отправлена'));
+    location.href='order.html?id='+encodeURIComponent(o.id);
+  }catch(e){ toast(e.message,'error'); b.disabled=false; b.textContent=orig; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Проверка — BIG4 эксперт</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap&subset=cyrillic,cyrillic-ext,latin" rel="stylesheet">
+<link rel="stylesheet" href="../assets/big4.css"><link rel="stylesheet" href="cabinet.css">
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <a class="logo" href="dashboard.html"><svg viewBox="0 0 40 40" fill="none"><path d="M20 2 L35 11 V29 L20 38 L5 29 V11 Z" stroke="var(--accent-2)" stroke-width="1.4"/><path d="M14 26 L18.5 30.5 L27 19" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>BIG<span class="four">4</span></span></a>
+    <nav>
+      <a href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Обзор</a>
+      <a href="expert.html" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3 8-8"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke-linecap="round"/></svg>Проверка</a>
+      <a href="#" onclick="logout();return false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 4h4a2 2 0 012 2v12a2 2 0 01-2 2h-4"/><path d="M9 16l-4-4 4-4M5 12h11" stroke-linecap="round" stroke-linejoin="round"/></svg>Выйти</a>
+      <a href="../index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>На сайт</a>
+    </nav>
+    <div class="side-foot"><div class="who" id="who">—<small id="who-sub">эксперт</small></div></div>
+  </aside>
+
+  <div class="main-col">
+    <div class="topbar"><div><h1 data-i18n="cab_review">Очередь проверки</h1><div class="sub" id="count">—</div></div></div>
+    <div class="content">
+      <div class="panel reveal">
+        <p class="muted" style="margin-bottom:16px" data-i18n="e_intro">Заказы, по которым AI-панель собрала черновик. Ваша задача — сверить выводы с источниками и заверить отчёт. Только заверённый отчёт можно публиковать.</p>
+        <table class="tbl">
+          <thead><tr><th data-i18n="e_th_order">Заказ</th><th data-i18n="o_th_status">Статус</th><th data-i18n="e_th_in">Поступил</th></tr></thead>
+          <tbody id="rows"><tr><td colspan="3" class="muted" style="padding:18px">Загрузка…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="switch"><button data-t="dark" class="on">Dark</button><button data-t="light">Light</button><button data-t="sepia">Sepia</button></div>
+<script src="../assets/big4.js"></script>
+<script src="api.js"></script>
+<script src="../assets/countries.js"></script>
+<script src="../assets/i18n-cabinet.js"></script>
+<script src="cabinet-i18n.js"></script>
+<script src="../assets/i18n.js"></script>
+<script>
+function T(k,d){ return (window.BIG4I18N&&window.BIG4I18N.t(k))||d; }
+(async function(){
+  if(!requireAuth()) return;
+  try{
+    var me=(await api.me()).user;
+    document.getElementById('who').firstChild.textContent=me.name||me.email;
+    document.getElementById('who-sub').textContent=me.role;
+    if(me.role!=='expert' && me.role!=='admin'){ toast(T('e_not_expert','Раздел доступен только экспертам'),'error'); setTimeout(function(){location.href='dashboard.html';},1500); return; }
+  }catch(e){ if(e.code==='unauthorized'){location.href='login.html';return;} }
+  try{
+    var items=(await api.expertQueue()).items||[];
+    document.getElementById('count').textContent=items.length+' '+T('e_count_suffix','на проверке');
+    var tb=document.getElementById('rows');
+    tb.innerHTML= items.length ? items.map(function(o){
+      return '<tr class="row" onclick="location=\'expert-order.html?id='+encodeURIComponent(o.id)+'\'"><td>'+esc(o.title||o.id)+'</td><td>'+statusBadge(o.status)+'</td><td>'+esc((o.updated_at||'').slice(0,16).replace('T',' '))+'</td></tr>';
+    }).join('') : '<tr><td colspan="3" class="muted" style="padding:18px">'+T('e_empty','Очередь пуста — все отчёты заверены.')+'</td></tr>';
+  }catch(e){ document.getElementById('rows').innerHTML='<tr><td colspan="3" class="muted" style="padding:18px">'+esc(e.message)+'</td></tr>'; }
+})();
+</script>
+</body>
+</html>
