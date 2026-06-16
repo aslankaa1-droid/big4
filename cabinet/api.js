@@ -1,6 +1,9 @@
 // BIG4 — клиент REST API кабинета (КД-03).
-// Базовый URL настраивается: localStorage 'big4-api' или дефолт (wrangler dev).
-const API_BASE = (localStorage.getItem("big4-api") || "http://localhost:8787/api/v1").replace(/\/$/, "");
+// Базовый URL: localStorage 'big4-api' > прод (по хосту big4.info) > локальная разработка.
+// Прод-бэкенд (self-hosted на ai-server) публикуется наружу как https://api.big4.info.
+const BIG4_PROD_API = "https://api.big4.info/api/v1";
+const BIG4_IS_PROD = /(^|\.)big4\.info$/.test(location.hostname);
+const API_BASE = (localStorage.getItem("big4-api") || (BIG4_IS_PROD ? BIG4_PROD_API : "http://localhost:8787/api/v1")).replace(/\/$/, "");
 const API_ORIGIN = API_BASE.replace(/\/api\/v1$/, "");
 function tt(k, d) { return (window.BIG4I18N && window.BIG4I18N.t(k)) || d; }
 
