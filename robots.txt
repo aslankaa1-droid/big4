@@ -1,3 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /cabinet/
+
 Sitemap: https://big4.info/sitemap.xml
